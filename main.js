@@ -13,7 +13,7 @@ const getLatesNews = async () => {
 
 const render = () => {
     const newsHTML = newsList.map(
-        (news) => ` 
+        (news) => `   
         <div class="row news">
             <div class="col-lg-4">
                 <img class="news-img-size" src=${news.urlToImage}>
