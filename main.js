@@ -2,7 +2,7 @@ let newsList = [];
 
 const getLatesNews = async () => {
     const url = new URL(
-        `http://times-node-env.eba-appvq3ef.ap-northeast-2.elasticbeanstalk.com/top-headlines` 
+        `https://joyful-starship-12eca1.netlify.app/top-headlines` 
     );
     const response = await fetch(url.href);
     const data = await response.json();
