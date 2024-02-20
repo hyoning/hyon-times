@@ -1,9 +1,7 @@
 let newsList = [];
 
 const getLatesNews = async () => {
-    const url = new URL(
-        `https://joyful-starship-12eca1.netlify.app/top-headlines?` 
-    );
+    const url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`);
     const response = await fetch(url);
     const data = await response.json();
     newsList = data.articles;
@@ -28,7 +26,7 @@ const render = () => {
                 </div>
             </div>
         </div>
-    `);
+    `).join('');
     document.getElementById('news-board').innerHTML = newsHTML
 }
 getLatesNews();
