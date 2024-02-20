@@ -1,4 +1,7 @@
 let newsList = [];
+const menus = document.querySelectorAll('.menus button');
+
+menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(event)))
 
 const getLatesNews = async () => {
     const url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`);
@@ -6,8 +9,26 @@ const getLatesNews = async () => {
     const data = await response.json();
     newsList = data.articles;
     render();
-    console.log('dd', newsList);
 }
+ 
+const getNewByCategory = async (event) => {
+    const category = event.target.textContent.toLowerCase();
+    const url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
+    const response = await fetch(url);
+    const data = await response.json();
+    newsList = data.articles;
+    render();
+}
+
+const getNewsByKeyword = async () => {
+    const keyword = document.getElementById('search-input').value;
+    const url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?q=${keyword}`);
+    const response = await fetch(url);
+    const data = await response.json();
+    newsList = data.articles;
+    render();
+}
+
 
 const render = () => {
     const newsHTML = newsList.map(
@@ -30,3 +51,5 @@ const render = () => {
     document.getElementById('news-board').innerHTML = newsHTML
 }
 getLatesNews();
+
+
