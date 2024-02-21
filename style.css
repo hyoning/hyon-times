@@ -32,3 +32,85 @@
     padding: 1.2em 0;
     border-bottom:2px solid #222;
 }
+.headIcon--Wrap{
+    width:100%;
+    padding:1rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap:1em;
+}
+.fas{
+    font-size:1.2em;
+}
+.searchWrap{
+    position: relative;
+    width: 50%;
+    text-align: right;
+}
+/*사이드바*/
+.hide{
+    display: none;
+}
+.side-menu {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 99;
+    top: 0;
+    left: 0;
+    background-color: burlywood;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  .side-menu-list button {
+    margin: 5px;
+    border: none;
+    background: none;
+    width: 120px;
+  }
+  
+  .side-menu .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+    border: none;
+    background: none;
+  }
+  
+  .side-menu-list {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .side-menu-list button:hover {
+    background-color: beige;
+    border-radius: 3px;
+  }
+
+  #searchInput--Wrap{
+    display: none;
+    position: absolute;
+    right:0;
+    top:1.5em;
+  }
+  #searchInput--Wrap input{
+    flex: 1 1 auto;
+    width:100%;
+  }
+  #searchInput--Wrap button{
+    flex:0 0 50px;
+    width:50px;
+  }
+  @media screen and (max-width: 63rem) {
+    .hide {
+      display: inline;
+    }
+    .main-menus {
+      display: none;
+    }
+  }
