@@ -51,6 +51,8 @@ const getNews = async() => {
 const getLatesNews = async () => {
     page = 1;
     url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`);
+    underLine.style.left = 0 + "px";
+    underLine.style.width = 0 + "px";
     getNews();
 }
  
@@ -73,9 +75,8 @@ const getNewBySideCategory = async (event) => {
 }
 
 const openSearchBox = () => {
-
     if (inputWrap.style.display === "flex") {
-        inputWrap.style.display = "none";x
+        inputWrap.style.display = "none";
     } else {
         inputWrap.style.display = "flex";
     }
@@ -104,14 +105,12 @@ const getNewEnterKeyword = async (event) => {
     }
 }
 
-
-
 const render = () => {
     const newsHTML = newsList.map(
         (news) => `   
         <div class="row news">
             <div class="col-lg-4">
-                <img class="news-img-size" src=${news.urlToImage}>
+                <img class="news-img-size" src=${news.urlToImage} onerror="this.src='images/noImage.jpg';">
             </div>
             <div class="col-lg-8">
                 <h2>${news.title}</h2>
@@ -176,6 +175,5 @@ const openNav = () => {
 const closeNav = () => {
 document.getElementById("mySidenav").style.width = "0";
 };
-
 
 getLatesNews();
