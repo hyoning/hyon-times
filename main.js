@@ -5,11 +5,10 @@ let inputWrap = document.getElementById("searchInput--Wrap");
 menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(event)))
 
 let url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`)
-let totalResults = 0
-let page = 1
-let totalPages = 1
-let pageSize = 10 // 1개 페이지에 몇개씩 보여줄지
-
+let page = 1;
+let totalPage = 1;
+let pageSize = 10;// 1개 페이지에 몇개씩 보여줄지
+let groupSize = 5;
 
 const getNews = async() => {
     try{
@@ -24,25 +23,25 @@ const getNews = async() => {
         if(response.status === 200){
             if(data.totalResults === 0){
                 page = 0;
-                totalResults = 0;
+                totalPage = 0;
                 paginationRender();
                 throw new Error("No result for this search")
             }
             newsList = data.articles;
-            totalPages = Math.ceil(data.totalResults / pageSize);
+            totalPage = Math.ceil(data.totalResults / pageSize);
             render();
             paginationRender();
         } else{
-            // page = 0;
-            // totalResults = 0;
+            page = 0;
+            totalPage = 0;
             paginationRender();
-            // throw new Error(data.message)
+            throw new Error(data.message)
         }
     } catch(error){
-        // page = 0;
-        // totalResults = 0;
+        page = 0;
+        totalPage = 0;
         paginationRender();
-        // errorRender(error.message);
+        errorRender(error.message);
     }
 }
 const getLatesNews = async () => {
@@ -107,29 +106,28 @@ const errorRender = (errorMessage) => {
 
  const paginationRender = () => {
     let paginationHTML = ``;
+    let pageGroup = Math.ceil(page / groupSize);
+    let lastPage = pageGroup * groupSize;
 
-    const pageGroup = Math.ceil(page/5);
-    const lastPage = pageGroup * 5;
-
-    if(lastPage > totalPages){
-        lastPage = totalPages;
+    // console.log(lastPage);
+    // console.log(totalPage);
+    if(lastPage > totalPage){
+        lastPage = totalPage;
     }
 
     //firstPage
-    const firstPage = lastPage - 4 <= 0 ? 1 : lastPage - 4; 
-
-
+    const firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1); 
 
     if (firstPage >= 6) {
-        paginationHTML = `<li class="page-item" onclick="moveToPage(1)"><a class="page-link" href="#">&lt&lt</a></li>
-        <li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">&lt</a></li>`;
+        paginationHTML = `<li class="page-item" onclick="moveToPage(1)"><a class="page-link">&lt&lt</a></li>
+        <li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link">&lt</a></li>`;
     }
     for(let i=firstPage; i<=lastPage; i++){
-        paginationHTML += `<li class="page-item ${i===page? "active" : ""}" onclick="moveToPage(${i})"><a class="page-link" href="#">${i}</a></li>`
+        paginationHTML += `<li class="page-item ${i===page? "active" : ""}" onclick="moveToPage(${i})"><a class="page-link">${i}</a></li>`
     }
-    if (lastPage < totalPages)
-    paginationHTML+=`<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">&gt</a></li>
-    <li class="page-item" onclick="moveToPage(${totalPages})"><a class="page-link" href="#">&gt&gt</a></li>`;
+    if (lastPage < totalPage)
+    paginationHTML+=`<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link">&gt</a></li>
+    <li class="page-item" onclick="moveToPage(${totalPage})"><a class="page-link" >&gt&gt</a></li>`;
     document.querySelector('.pagination').innerHTML = paginationHTML
     
 };
@@ -140,8 +138,6 @@ const moveToPage = (pageNum) => {
     getNews();
 };
 
-getLatesNews();
-
 const openNav = () => {
     document.getElementById("mySidenav").style.width = "250px";
   };
@@ -150,3 +146,4 @@ const closeNav = () => {
 document.getElementById("mySidenav").style.width = "0";
 };
 
+getLatesNews();
