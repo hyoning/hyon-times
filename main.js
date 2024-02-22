@@ -1,9 +1,12 @@
 let newsList = [];
 let menus = document.querySelectorAll('.menus button');
+let sideMenus = document.querySelectorAll('.side-menu-list button');
+
 let underLine = document.querySelector('.menus_line');
 let inputWrap = document.getElementById("searchInput--Wrap");
 
 menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(event)))
+sideMenus.forEach(sideMenus => sideMenus.addEventListener("click",(event) => getNewBySideCategory(event)))
 
 let url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`)
 let page = 1;
@@ -17,10 +20,8 @@ const getNews = async() => {
         url.searchParams.set("pageSize", pageSize) //&pageSize=pageSize
 
         const response = await fetch(url); 
-    
-        console.log(response);
         const data = await response.json();
-        console.log(data);
+        
         if(response.status === 200){
             if(data.totalResults === 0){
                 page = 0;
@@ -61,11 +62,18 @@ const getNewByCategory = async (event) => {
 
     getNews();
 }
+const getNewBySideCategory = async (event) => {
+    const category = event.target.textContent.toLowerCase();
+    page = 1;
+    url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
+    getNews();
+    closeNav();
+}
 
 const openSearchBox = () => {
 
     if (inputWrap.style.display === "flex") {
-        inputWrap.style.display = "none";
+        inputWrap.style.display = "none";x
     } else {
         inputWrap.style.display = "flex";
     }
