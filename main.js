@@ -3,10 +3,12 @@ let menus = document.querySelectorAll('.menus button');
 let sideMenus = document.querySelectorAll('.side-menu-list button');
 
 let underLine = document.querySelector('.menus_line');
-let inputWrap = document.getElementById("searchInput--Wrap");
+let inputWrap = document.getElementById('searchInput--Wrap');
+let searchInput = document.getElementById('search-input')
 
 menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(event)))
 sideMenus.forEach(sideMenus => sideMenus.addEventListener("click",(event) => getNewBySideCategory(event)))
+searchInput.addEventListener("keyup",(event) => getNewEnterKeyword(event))
 
 let url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`)
 let page = 1;
@@ -88,6 +90,20 @@ const getNewsByKeyword = async () => {
     getNews();
     inputWrap.style.display = "none";
 }
+const getNewEnterKeyword = async (event) => {
+    if(event.key === 'Enter'){
+        event.preventDefault();
+        if(searchInput.value.trim() !== "") {
+            page = 1;
+            const keyword = searchInput.value;
+            url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?q=${keyword}`);
+            getNews();
+        }
+        searchInput.value = '';
+        closeSearch();
+    }
+}
+
 
 
 const render = () => {
@@ -160,5 +176,6 @@ const openNav = () => {
 const closeNav = () => {
 document.getElementById("mySidenav").style.width = "0";
 };
+
 
 getLatesNews();

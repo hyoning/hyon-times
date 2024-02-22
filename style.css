@@ -17,6 +17,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    cursor: pointer;
 }
 .head-line img{
     width:100px;
@@ -41,7 +42,7 @@
     bottom:0px;
     height: 2px;
     background: #1100D7;
-    
+    transition:ease-in-out;
 }
 .fas{
     font-size:1.2em;
@@ -158,7 +159,7 @@
     max-height: 250px;
 }
 .news{
-    padding: 1.2em;
+    padding: 1.2em 1em;
     background:#fff
 }
 nav{
@@ -166,4 +167,7 @@ nav{
     display: flex;
     justify-content: center;
     padding: 1.2em 0;
+}
+.page-item {
+    cursor: pointer;
 }
