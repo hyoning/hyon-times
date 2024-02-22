@@ -1,5 +1,6 @@
 let newsList = [];
-const menus = document.querySelectorAll('.menus button');
+let menus = document.querySelectorAll('.menus button');
+let underLine = document.querySelector('.menus_line');
 let inputWrap = document.getElementById("searchInput--Wrap");
 
 menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(event)))
@@ -54,6 +55,10 @@ const getNewByCategory = async (event) => {
     const category = event.target.textContent.toLowerCase();
     page = 1;
     url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
+
+    underLine.style.left = event.currentTarget.offsetLeft + "px";
+    underLine.style.width = event.currentTarget.offsetWidth + "px";
+
     getNews();
 }
 
@@ -64,8 +69,10 @@ const openSearchBox = () => {
     } else {
         inputWrap.style.display = "flex";
     }
-  };
-
+};
+const closeSearch = () => {
+    inputWrap.style.display = "none";
+}
 const getNewsByKeyword = async () => {
     page = 1;
     const keyword = document.getElementById('search-input').value;
@@ -116,7 +123,7 @@ const errorRender = (errorMessage) => {
     }
 
     //firstPage
-    const firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1); 
+    let firstPage = lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1); 
 
     if (firstPage >= 6) {
         paginationHTML = `<li class="page-item" onclick="moveToPage(1)"><a class="page-link">&lt&lt</a></li>
@@ -139,7 +146,7 @@ const moveToPage = (pageNum) => {
 };
 
 const openNav = () => {
-    document.getElementById("mySidenav").style.width = "250px";
+    document.getElementById("mySidenav").style.width = "70%";
   };
   
 const closeNav = () => {
