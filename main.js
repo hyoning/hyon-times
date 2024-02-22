@@ -7,8 +7,8 @@ menus.forEach(menu => menu.addEventListener("click",(event) => getNewByCategory(
 let url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`)
 let totalResults = 0
 let page = 1
+let totalPages = 1
 let pageSize = 10 // 1개 페이지에 몇개씩 보여줄지
-let groupSize = 5 //페이지 넘버를 몇개씩 보여줄지
 
 
 const getNews = async() => {
@@ -22,18 +22,27 @@ const getNews = async() => {
         const data = await response.json();
         console.log(data);
         if(response.status === 200){
-            if(data.articles.length === 0){
+            if(data.totalResults === 0){
+                page = 0;
+                totalResults = 0;
+                paginationRender();
                 throw new Error("No result for this search")
             }
             newsList = data.articles;
-            totalResults = data.totalResults;
+            totalPages = Math.ceil(data.totalResults / pageSize);
             render();
             paginationRender();
         } else{
-            throw new Error(data.message)
+            // page = 0;
+            // totalResults = 0;
+            paginationRender();
+            // throw new Error(data.message)
         }
     } catch(error){
-        errorRender(error.message)
+        // page = 0;
+        // totalResults = 0;
+        paginationRender();
+        // errorRender(error.message);
     }
 }
 const getLatesNews = async () => {
@@ -43,8 +52,8 @@ const getLatesNews = async () => {
 }
  
 const getNewByCategory = async (event) => {
-    page = 1;
     const category = event.target.textContent.toLowerCase();
+    page = 1;
     url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
     getNews();
 }
@@ -97,39 +106,37 @@ const errorRender = (errorMessage) => {
  }
 
  const paginationRender = () => {
-    //totalResult
-    //page
-    //pageSize
-    //groupSize
-    //totalPages
-    const totalPages = Math.ceil(totalResults / pageSize);
-    //pageGroup
-    const pageGroup = Math.ceil(page/groupSize);
-    //lastPage
+    let paginationHTML = ``;
 
-    const lastPage = pageGroup * groupSize;
+    const pageGroup = Math.ceil(page/5);
+    const lastPage = pageGroup * 5;
 
     if(lastPage > totalPages){
         lastPage = totalPages;
     }
 
     //firstPage
-    const firstPage = 
-        lastPage - (groupSize - 1) <= 0 ? 1 : lastPage - (groupSize - 1); 
+    const firstPage = lastPage - 4 <= 0 ? 1 : lastPage - 4; 
 
 
 
-    let paginationHTML = `<li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">Previous</a></li>`;
+    if (firstPage >= 6) {
+        paginationHTML = `<li class="page-item" onclick="moveToPage(1)"><a class="page-link" href="#">&lt&lt</a></li>
+        <li class="page-item" onclick="moveToPage(${page-1})"><a class="page-link" href="#">&lt</a></li>`;
+    }
     for(let i=firstPage; i<=lastPage; i++){
         paginationHTML += `<li class="page-item ${i===page? "active" : ""}" onclick="moveToPage(${i})"><a class="page-link" href="#">${i}</a></li>`
     }
-    paginationHTML+=`<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">Next</a></li>`;
+    if (lastPage < totalPages)
+    paginationHTML+=`<li class="page-item" onclick="moveToPage(${page+1})"><a class="page-link" href="#">&gt</a></li>
+    <li class="page-item" onclick="moveToPage(${totalPages})"><a class="page-link" href="#">&gt&gt</a></li>`;
     document.querySelector('.pagination').innerHTML = paginationHTML
     
 };
 
 const moveToPage = (pageNum) => {
     page = pageNum;
+    window.scrollTo({ top: 0, behavior: "smooth" });
     getNews();
 };
 
