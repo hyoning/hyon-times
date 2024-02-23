@@ -1,7 +1,7 @@
 let newsList = [];
 let menus = document.querySelectorAll('.menus button');
 let sideMenus = document.querySelectorAll('.side-menu-list button');
-
+let allButton = document.getElementById('all')
 let underLine = document.querySelector('.menus_line');
 let inputWrap = document.getElementById('searchInput--Wrap');
 let searchInput = document.getElementById('search-input')
@@ -15,6 +15,9 @@ let page = 1;
 let totalPage = 1;
 let pageSize = 10;// 1개 페이지에 몇개씩 보여줄지
 let groupSize = 5;
+
+
+
 
 const getNews = async() => {
     try{
@@ -51,16 +54,20 @@ const getNews = async() => {
 const getLatesNews = async () => {
     page = 1;
     url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`);
-    underLine.style.left = 0 + "px";
-    underLine.style.width = 0 + "px";
+    underLine.style.left = allButton.offsetLeft + "px";
+    underLine.style.width = allButton.offsetWidth + "px";
     getNews();
 }
  
 const getNewByCategory = async (event) => {
     const category = event.target.textContent.toLowerCase();
     page = 1;
-    url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
-
+    console.log(category);
+    if(category === 'all'){
+         url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?`);
+    } else {
+         url = new URL(`https://joyful-starship-12eca1.netlify.app/top-headlines?category=${category}`);
+    }
     underLine.style.left = event.currentTarget.offsetLeft + "px";
     underLine.style.width = event.currentTarget.offsetWidth + "px";
 
